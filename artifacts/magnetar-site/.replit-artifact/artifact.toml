@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Magnetar Website"
+description = "The supplied company website updated with Magnetar branding and the requested background color grade, preserving the existing page content and layout."
+version = "1.0.0"
+id = "artifacts/magnetar-site"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24771
+
+[services.development]
+run = "pnpm --filter @workspace/magnetar-site run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/magnetar-site", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/magnetar-site/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24771"
+BASE_PATH = "/"
